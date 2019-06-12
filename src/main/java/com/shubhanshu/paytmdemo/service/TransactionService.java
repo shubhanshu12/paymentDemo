@@ -39,35 +39,34 @@ public class TransactionService {
             if (fromUser.getUserType() != UserType.BANK && fromUserWallet.getMoney() < amount) {
                 throw new IllegalArgumentException("Not enough money in wallet");
             }
-            updateWallet(fromUser, amount, fromUserWallet, toUserWallet);
+            triggerWalletAndTransactionUpdates(fromUser, amount, fromUserWallet, toUserWallet, t);
         } catch (Exception e) {
             e.printStackTrace();
             t.setStatus(TransactionStatus.FAILED);
             transactionRepository.save(t);
             throw e;
         }
-        t.setStatus(TransactionStatus.SUCCESS);
-        transactionRepository.save(t);
+
         return t;
     }
 
     @Transactional
-    void updateWallet(PaytmUser fromUser, Long amount, Wallet fromUserWallet, Wallet toUserWallet) {
+    void triggerWalletAndTransactionUpdates(PaytmUser fromUser, Long amount, Wallet fromUserWallet, Wallet toUserWallet, TransactionLog t) {
         if (fromUser.getUserType() != UserType.BANK) {
             fromUserWallet.setMoney(fromUserWallet.getMoney() - amount);
             walletRepository.save(fromUserWallet);
         }
         toUserWallet.setMoney(toUserWallet.getMoney() + amount);
         walletRepository.save(toUserWallet);
+        t.setStatus(TransactionStatus.SUCCESS);
+        transactionRepository.save(t);
     }
 
-    @Transactional
     void initTransaction(PaytmUser fromUser, PaytmUser toUser, Long amount, TransactionLog t) {
         t.setFromUser(fromUser);
         t.setToUser(toUser);
         t.setAmountSent(amount);
         t.setTransactionType(getTransactionType(fromUser, toUser));
-        transactionRepository.save(t);
     }
 
     public Set<TransactionLog> getAllTransactions(Long phoneNumber) {

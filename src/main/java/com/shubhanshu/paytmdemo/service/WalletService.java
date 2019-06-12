@@ -92,8 +92,8 @@ public class WalletService {
         }
         try {
             transactionService.createTransaction(bankUser, user, amount);
-            userWallet.setMoney(amount);
-            walletRepository.save(userWallet);
+//            userWallet.setMoney(amount);
+//            walletRepository.save(userWallet);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
