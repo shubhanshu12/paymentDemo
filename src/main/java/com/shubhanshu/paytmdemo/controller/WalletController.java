@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/wallet")
+@RequestMapping("/rest/wallet")
 public class WalletController {
 
     private WalletService walletService;

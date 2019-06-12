@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/passbook")
+@RequestMapping("/rest/passbook")
 public class PassbookController {
 
     private TransactionService transactionService;
