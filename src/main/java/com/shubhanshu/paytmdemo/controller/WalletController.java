@@ -6,13 +6,10 @@ import com.shubhanshu.paytmdemo.model.TransactionLog;
 import com.shubhanshu.paytmdemo.model.Wallet;
 import com.shubhanshu.paytmdemo.service.UserService;
 import com.shubhanshu.paytmdemo.service.WalletService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 
 @RestController
 @RequestMapping("/wallet")
@@ -26,10 +23,9 @@ public class WalletController {
         this.userService = userService;
     }
 
-    @POST
-    @RequestMapping("/create")
-    public DTO createWallet(@RequestParam Long phoneNumber){
-        if(phoneNumber == null) {
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public DTO createWallet(@RequestParam Long phoneNumber) {
+        if (phoneNumber == null) {
             return new ErrorDTO("Phone Number cannot be null");
         }
 
@@ -42,44 +38,41 @@ public class WalletController {
 
     }
 
-    @POST
-    @RequestMapping("/addMoney")
-    public DTO addMoney(@RequestParam Long phoneNumber, @RequestParam Long amount) {
-        if(phoneNumber == null || amount == null){
-            return new ErrorDTO("Phone Nummber/ Amount can't be null");
+    @RequestMapping(value = "/addMoney", method = RequestMethod.POST)
+    public DTO addMoney(@RequestParam Long phoneNumber, @RequestParam Long amount, @RequestParam Long fromBankId) {
+        if (phoneNumber == null || amount == null || fromBankId == null) {
+            return new ErrorDTO("Phone Nummber/ Amount/ fromBankId can't be null");
         }
         try {
-            walletService.addMoney(phoneNumber, amount);
+            walletService.addMoney(phoneNumber, amount, fromBankId);
             return new SuccessDTO("Money added in wallet");
         } catch (Exception e) {
             return new ErrorDTO(e.getMessage(), e.toString());
         }
     }
 
-    @POST
-    @RequestMapping("/sendMoney")
+    @RequestMapping(value = "/sendMoney", method = RequestMethod.POST)
     public DTO sendMoney(@RequestParam Long fromPhoneNumber, @RequestParam Long toPhoneNumber, @RequestParam Long amount) {
-        if(fromPhoneNumber == null || toPhoneNumber == null || amount == null){
+        if (fromPhoneNumber == null || toPhoneNumber == null || amount == null) {
             return new ErrorDTO("(Reciever/ Sender)Phone Nummber/ Amount can't be null");
         }
         try {
             TransactionLog transactionLog = walletService.sendMoney(fromPhoneNumber, toPhoneNumber, amount);
-            return new TransactionLogDTO(transactionLog.getId(), transactionLog.getFromUser().getPhoneNumber(), transactionLog.getToUser().getPhoneNumber(), transactionLog.getAmountSent(), transactionLog.getCreateDateTime());
+            return new TransactionLogDTO(transactionLog.getId(), transactionLog.getFromUser().getPhoneNumber(), transactionLog.getToUser().getPhoneNumber(), transactionLog.getAmountSent(), transactionLog.getCreateDateTime(), transactionLog.getStatus(), transactionLog.getTransactionType());
         } catch (Exception e) {
             return new ErrorDTO(e.getMessage(), e.toString());
         }
     }
 
-    @GET
-    @RequestMapping("/checkBalance")
-    public Long checkBalance(@RequestParam Long phoneNumber){
-        if(phoneNumber == null) {
+    @RequestMapping(value = "/checkBalance", method = RequestMethod.GET)
+    public Long checkBalance(@RequestParam Long phoneNumber) {
+        if (phoneNumber == null) {
             return null;
         }
 
         PaytmUser user = userService.findByPhoneNumber(phoneNumber);
         Wallet userWallet = user.getWallet();
-        if(userWallet == null) {
+        if (userWallet == null) {
             return null;
         }
         return userWallet.getMoney();

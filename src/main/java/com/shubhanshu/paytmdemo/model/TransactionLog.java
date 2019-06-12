@@ -1,5 +1,7 @@
 package com.shubhanshu.paytmdemo.model;
 
+import com.shubhanshu.logicConstants.TransactionStatus;
+import com.shubhanshu.logicConstants.TransactionType;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -12,14 +14,17 @@ public class TransactionLog {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToOne (cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     private PaytmUser fromUser;
     @OneToOne(cascade = CascadeType.ALL)
     private PaytmUser toUser;
     private Long amountSent;
-
+    @Enumerated(EnumType.ORDINAL)
+    private TransactionType transactionType;
     @CreationTimestamp
     private LocalDateTime createDateTime;
+    @Enumerated(EnumType.ORDINAL)
+    private TransactionStatus status;
 
     public Long getId() {
         return id;
@@ -53,12 +58,28 @@ public class TransactionLog {
         this.amountSent = amountSent;
     }
 
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
+    }
+
     public LocalDateTime getCreateDateTime() {
         return createDateTime;
     }
 
     public void setCreateDateTime(LocalDateTime createDateTime) {
         this.createDateTime = createDateTime;
+    }
+
+    public TransactionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TransactionStatus status) {
+        this.status = status;
     }
 
     @Override
@@ -70,11 +91,13 @@ public class TransactionLog {
                 Objects.equals(fromUser, that.fromUser) &&
                 Objects.equals(toUser, that.toUser) &&
                 Objects.equals(amountSent, that.amountSent) &&
-                Objects.equals(createDateTime, that.createDateTime);
+                transactionType == that.transactionType &&
+                Objects.equals(createDateTime, that.createDateTime) &&
+                status == that.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fromUser, toUser, amountSent, createDateTime);
+        return Objects.hash(id, fromUser, toUser, amountSent, transactionType, createDateTime, status);
     }
 }

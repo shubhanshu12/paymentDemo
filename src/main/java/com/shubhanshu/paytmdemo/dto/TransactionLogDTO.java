@@ -1,5 +1,8 @@
 package com.shubhanshu.paytmdemo.dto;
 
+import com.shubhanshu.logicConstants.TransactionStatus;
+import com.shubhanshu.logicConstants.TransactionType;
+
 import java.time.LocalDateTime;
 
 public class TransactionLogDTO implements DTO {
@@ -9,13 +12,17 @@ public class TransactionLogDTO implements DTO {
     private Long toPhoneNumber;
     private Long amountSent;
     private LocalDateTime createDateTime;
+    private TransactionStatus status;
+    private TransactionType transactionType;
 
-    public TransactionLogDTO(Long id, Long fromPhoneNumber, Long toPhoneNumber, Long amountSent, LocalDateTime createDateTime) {
+    public TransactionLogDTO(Long id, Long fromPhoneNumber, Long toPhoneNumber, Long amountSent, LocalDateTime createDateTime, TransactionStatus status, TransactionType transactionType) {
         this.id = id;
         this.fromPhoneNumber = fromPhoneNumber;
         this.toPhoneNumber = toPhoneNumber;
         this.amountSent = amountSent;
         this.createDateTime = createDateTime;
+        this.status = status;
+        this.transactionType = transactionType;
     }
 
     public Long getId() {
@@ -56,5 +63,21 @@ public class TransactionLogDTO implements DTO {
 
     public void setCreateDateTime(LocalDateTime createDateTime) {
         this.createDateTime = createDateTime;
+    }
+
+    public TransactionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TransactionStatus status) {
+        this.status = status;
+    }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
     }
 }

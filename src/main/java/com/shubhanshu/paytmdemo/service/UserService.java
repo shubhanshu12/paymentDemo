@@ -1,7 +1,7 @@
 package com.shubhanshu.paytmdemo.service;
 
-import com.shubhanshu.LogicConstants.UserType;
 import com.shubhanshu.exceptions.PersistenceException;
+import com.shubhanshu.logicConstants.UserType;
 import com.shubhanshu.paytmdemo.model.PaytmUser;
 import com.shubhanshu.paytmdemo.repository.PaytmUserRepository;
 import org.springframework.stereotype.Service;
@@ -32,10 +32,17 @@ public class UserService {
     }
 
     public PaytmUser findByPhoneNumber(Long phoneNumber) {
-        if(phoneNumber == null){
+        if (phoneNumber == null) {
             return null;
         }
 
         return user.findByPhoneNumber(phoneNumber);
+    }
+
+    public UserType getUserType(PaytmUser user) {
+        if (user == null) {
+            return null;
+        }
+        return user.getUserType();
     }
 }

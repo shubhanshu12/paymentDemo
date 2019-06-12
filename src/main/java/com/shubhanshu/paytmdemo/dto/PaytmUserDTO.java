@@ -1,6 +1,6 @@
 package com.shubhanshu.paytmdemo.dto;
 
-import com.shubhanshu.LogicConstants.UserType;
+import com.shubhanshu.logicConstants.UserType;
 
 public class PaytmUserDTO implements DTO {
     private Long id;

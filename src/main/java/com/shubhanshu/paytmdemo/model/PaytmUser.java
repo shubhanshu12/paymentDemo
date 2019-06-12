@@ -1,6 +1,6 @@
 package com.shubhanshu.paytmdemo.model;
 
-import com.shubhanshu.LogicConstants.UserType;
+import com.shubhanshu.logicConstants.UserType;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -17,10 +17,10 @@ public class PaytmUser {
     @Enumerated(EnumType.STRING)
     private UserType userType;
     private Long phoneNumber;
-    @OneToOne( cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     private Wallet wallet;
 
-    public PaytmUser(){
+    public PaytmUser() {
 
     }
 
@@ -29,9 +29,8 @@ public class PaytmUser {
         LastName = lastName;
         this.userType = userType;
         this.phoneNumber = phoneNumber;
-        this.wallet =  null;
+        this.wallet = null;
     }
-
 
 
     public Long getId() {
