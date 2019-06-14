@@ -100,4 +100,17 @@ public class TransactionLog {
     public int hashCode() {
         return Objects.hash(id, fromUser, toUser, amountSent, transactionType, createDateTime, status);
     }
+
+    @Override
+    public String toString() {
+        return "TransactionLog{" +
+                "id=" + id +
+                ", fromUser=" + fromUser +
+                ", toUser=" + toUser +
+                ", amountSent=" + amountSent +
+                ", transactionType=" + transactionType +
+                ", createDateTime=" + createDateTime +
+                ", status=" + status +
+                '}';
+    }
 }

@@ -6,3 +6,15 @@ spring:
   resources:
     chain:
       enabled: true
+
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: group-id
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: com.shubhanshu.paytmdemo.dto.serializer.TransactionDeserializer
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: com.shubhanshu.paytmdemo.dto.serializer.TransactionSerializer

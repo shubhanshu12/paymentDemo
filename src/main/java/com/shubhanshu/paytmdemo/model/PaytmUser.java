@@ -98,4 +98,16 @@ public class PaytmUser {
     public int hashCode() {
         return Objects.hash(id, firstName, LastName, userType, phoneNumber, wallet);
     }
+
+    @Override
+    public String toString() {
+        return "PaytmUser{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", LastName='" + LastName + '\'' +
+                ", userType=" + userType +
+                ", phoneNumber=" + phoneNumber +
+                ", wallet=" + wallet +
+                '}';
+    }
 }

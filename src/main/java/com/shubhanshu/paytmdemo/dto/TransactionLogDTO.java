@@ -1,5 +1,10 @@
 package com.shubhanshu.paytmdemo.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.shubhanshu.logicConstants.TransactionStatus;
 import com.shubhanshu.logicConstants.TransactionType;
 
@@ -15,7 +20,15 @@ public class TransactionLogDTO implements DTO {
     private TransactionStatus status;
     private TransactionType transactionType;
 
-    public TransactionLogDTO(Long id, Long fromPhoneNumber, Long toPhoneNumber, Long amountSent, LocalDateTime createDateTime, TransactionStatus status, TransactionType transactionType) {
+    public TransactionLogDTO(@JsonProperty("id") Long id,
+                             @JsonProperty("fromPhoneNumber") Long fromPhoneNumber,
+                             @JsonProperty("toPhoneNumber") Long toPhoneNumber,
+                             @JsonProperty("amountSent") Long amountSent,
+                             @JsonSerialize(using = LocalDateTimeSerializer.class)
+                             @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+                             @JsonProperty("createDateTime") LocalDateTime createDateTime,
+                             @JsonProperty("status") TransactionStatus status,
+                             @JsonProperty("transactionType") TransactionType transactionType) {
         this.id = id;
         this.fromPhoneNumber = fromPhoneNumber;
         this.toPhoneNumber = toPhoneNumber;
@@ -80,4 +93,20 @@ public class TransactionLogDTO implements DTO {
     public void setTransactionType(TransactionType transactionType) {
         this.transactionType = transactionType;
     }
+
+
+
+    @Override
+    public String toString() {
+        return "TransactionLogDTO{" +
+                "id=" + id +
+                ", fromPhoneNumber=" + fromPhoneNumber +
+                ", toPhoneNumber=" + toPhoneNumber +
+                ", amountSent=" + amountSent +
+                ", createDateTime=" + createDateTime +
+                ", status=" + status +
+                ", transactionType=" + transactionType +
+                '}';
+    }
+
 }
